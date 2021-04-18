@@ -80,3 +80,49 @@ resource "aws_route_table_association" "pg_public_association" {
 }
 
 
+
+#Elastic Ip
+resource "aws_eip" "pg_eip" {
+  vpc   = true
+  tags = {
+    Name = "pg_eip"
+  }
+}
+
+
+#Nat Gateway
+resource "aws_nat_gateway" "pg_nat_gw" {
+  allocation_id = aws_eip.pg_eip.id
+  subnet_id     = aws_subnet.pg_public_subnet.id
+
+  tags = {
+    Name = "pg_nat_gw"
+  }
+}
+
+
+#private route s
+resource "aws_route_table" "pg_private_rt_a" {
+  vpc_id = aws_vpc.pg_vpc.id
+
+  route {
+    cidr_block = var.accessip
+    gateway_id = aws_nat_gateway.pg_nat_gw.id
+  }
+
+  tags = {
+    Name = "pg_private_rt_a"
+  }
+}
+
+# private subnet associations a
+resource "aws_route_table_association" "pg_private_association_a" {
+  subnet_id      = aws_subnet.pg_private_subnet_a.id
+  route_table_id = aws_route_table.pg_private_rt_a.id
+}
+
+# private subnet associations b
+resource "aws_route_table_association" "pg_private_association_b" {
+  subnet_id      = aws_subnet.pg_private_subnet_b.id
+  route_table_id = aws_route_table.pg_private_rt_a.id
+}
