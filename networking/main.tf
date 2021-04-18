@@ -83,7 +83,7 @@ resource "aws_route_table_association" "pg_public_association" {
 
 #Elastic Ip
 resource "aws_eip" "pg_eip" {
-  vpc   = true
+  vpc = true
   tags = {
     Name = "pg_eip"
   }
@@ -201,6 +201,16 @@ resource "aws_security_group" "pg_db_sg" {
     to_port         = 5432
     protocol        = "tcp"
     security_groups = [aws_security_group.pg_app_sg.id]
+  }
+
+  ingress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    cidr_blocks = [
+      var.subnet_cidrs["private1"],
+      var.subnet_cidrs["private2"]
+    ]
   }
 
   egress {
