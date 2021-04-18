@@ -7,11 +7,9 @@ variable "aws_region" {}
 
 variable "vpc_cidr" {}
 
-variable "public_cidr" {}
-
-variable "private_cidr_1" {}
-
-variable "private_cidr_2" {}
+variable "subnet_cidrs" {
+  type = map(string)
+}
 
 variable "accessip" {}
 
