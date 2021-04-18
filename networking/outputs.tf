@@ -3,7 +3,7 @@ output "vpcid" {
 }
 
 output "public_subnet_a" {
-  value = aws_subnet.pg_public_subnet_a.id
+  value = aws_subnet.pg_public_subnet.id
 }
 
 output "private_subnet_a" {
