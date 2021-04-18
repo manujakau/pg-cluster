@@ -32,9 +32,10 @@ data "aws_ami" "server_ami_2" {
 
 #ec2
 resource "aws_instance" "bastion_host" {
-  count         = 1
-  instance_type = var.instance_type_1
-  ami           = data.aws_ami.server_ami_1.id
+  count                = 1
+  instance_type        = var.instance_type_1
+  ami                  = data.aws_ami.server_ami_1.id
+  iam_instance_profile = aws_iam_instance_profile.pg_cluster_profile.name
 
   tags = {
     Name = "bastion_host"
