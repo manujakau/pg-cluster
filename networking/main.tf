@@ -37,7 +37,6 @@ resource "aws_subnet" "pg_public_subnet" {
 }
 
 resource "aws_subnet" "pg_private_subnet_a" {
-  count             = 2
   vpc_id            = aws_vpc.pg_vpc.id
   cidr_block        = var.subnet_cidrs["private1"]
   availability_zone = data.aws_availability_zones.available.names[1]
