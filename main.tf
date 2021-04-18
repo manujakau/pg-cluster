@@ -18,7 +18,7 @@ module "compute" {
   key_name           = var.key_name
   instance_type_1    = var.instances_type01
   instance_type_2    = var.instances_type02
-  public_subnets_a   = module.networking.public_subnet_a
+  public_subnet_a    = module.networking.public_subnet_a
   private_subnet_a   = module.networking.private_subnet_a
   private_subnet_b   = module.networking.private_subnet_b
   ssh_security_group = module.networking.bastion_security_group
