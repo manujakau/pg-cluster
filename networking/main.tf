@@ -57,3 +57,26 @@ resource "aws_subnet" "pg_private_subnet_b" {
     Tier = "Private"
   }
 }
+
+
+#public route
+resource "aws_route_table" "pg_public_rt" {
+  vpc_id = aws_vpc.pg_vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.pg_internet_gateway.id
+  }
+
+  tags = {
+    Name = "pg_public_rt"
+  }
+}
+
+# public subnet associations
+resource "aws_route_table_association" "pg_public_association" {
+  subnet_id      = aws_subnet.pg_public_subnet.id
+  route_table_id = aws_route_table.pg_public_rt.id
+}
+
+
