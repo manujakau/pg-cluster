@@ -32,7 +32,6 @@ data "aws_ami" "server_ami_2" {
 
 #ec2
 resource "aws_instance" "bastion_host" {
-  count                = 1
   instance_type        = var.instance_type_1
   ami                  = data.aws_ami.server_ami_1.id
   iam_instance_profile = aws_iam_instance_profile.pg_cluster_profile.name
@@ -45,4 +44,38 @@ resource "aws_instance" "bastion_host" {
   vpc_security_group_ids = [var.ssh_security_group]
   subnet_id              = var.public_subnet_a
   user_data              = data.template_cloudinit_config.cloudinit-bastion.rendered
+}
+
+
+resource "aws_instance" "db_master_host" {
+  instance_type        = var.instance_type_2
+  ami                  = data.aws_ami.server_ami_2.id
+  iam_instance_profile = aws_iam_instance_profile.pg_cluster_profile.name
+  depends_on = [
+    aws_instance.db_slave_host,
+  ]
+
+  tags = {
+    Name = "db_master_host"
+  }
+
+  key_name               = var.key_name
+  vpc_security_group_ids = [var.db_security_group]
+  subnet_id              = var.private_subnet_a
+  user_data              = data.template_cloudinit_config.cloudinit-pgmaster.rendered
+}
+
+resource "aws_instance" "db_slave_host" {
+  instance_type        = var.instance_type_2
+  ami                  = data.aws_ami.server_ami_2.id
+  iam_instance_profile = aws_iam_instance_profile.pg_cluster_profile.name
+
+  tags = {
+    Name = "db_slave_host"
+  }
+
+  key_name               = var.key_name
+  vpc_security_group_ids = [var.db_security_group]
+  subnet_id              = var.private_subnet_b
+  user_data              = data.template_cloudinit_config.cloudinit-pgslave.rendered
 }
