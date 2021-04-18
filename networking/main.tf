@@ -126,3 +126,91 @@ resource "aws_route_table_association" "pg_private_association_b" {
   subnet_id      = aws_subnet.pg_private_subnet_b.id
   route_table_id = aws_route_table.pg_private_rt.id
 }
+
+
+#security groups
+resource "aws_security_group" "pg_bastion_sg" {
+  name        = "pg_bastion_sg"
+  description = "Used for access to the bastion instances"
+  vpc_id      = aws_vpc.pg_vpc.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [var.accessip]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "pg_bastion_sg"
+  }
+}
+
+resource "aws_security_group" "pg_app_sg" {
+  name        = "pg_app_sg"
+  description = "Used for access to the app instances"
+  vpc_id      = aws_vpc.pg_vpc.id
+
+  ingress {
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    security_groups = [aws_security_group.pg_bastion_sg.id]
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = [var.accessip]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "pg_app_sg"
+  }
+}
+
+resource "aws_security_group" "pg_db_sg" {
+  name        = "pg_db_sg"
+  description = "Used for access to the db instances"
+  vpc_id      = aws_vpc.pg_vpc.id
+
+  ingress {
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    security_groups = [aws_security_group.pg_bastion_sg.id]
+  }
+
+  ingress {
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.pg_app_sg.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "pg_db_sg"
+  }
+}
