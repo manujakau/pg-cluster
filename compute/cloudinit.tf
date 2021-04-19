@@ -13,6 +13,22 @@ data "template_cloudinit_config" "cloudinit-bastion" {
 }
 
 
+data "template_file" "shell-script-application" {
+  template = file("scripts/application.sh")
+}
+
+data "template_cloudinit_config" "cloudinit-application" {
+  gzip          = false
+  base64_encode = false
+
+  part {
+    content_type = "text/x-shellscript"
+    content      = data.template_file.shell-script-application.rendered
+  }
+
+}
+
+
 data "template_file" "shell-script-pgmaster" {
   template = file("scripts/pg_master.sh")
 }
