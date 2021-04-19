@@ -1,0 +1,1 @@
+${node_name} ansible_user=${ansible_user} ansible_ssh_pass=${ansible_ssh_pass} ansible_host=${ip}
