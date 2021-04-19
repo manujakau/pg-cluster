@@ -24,4 +24,6 @@ module "compute" {
   ssh_security_group = module.networking.bastion_security_group
   app_security_group = module.networking.application_security_group
   db_security_group  = module.networking.db_security_group
+  nat_depend         = module.networking.nat_depend
+  rt_depend          = module.networking.rt_depend
 }

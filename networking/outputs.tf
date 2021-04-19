@@ -25,3 +25,11 @@ output "application_security_group" {
 output "db_security_group" {
   value = aws_security_group.pg_db_sg.id
 }
+
+output "nat_depend" {
+  value = aws_nat_gateway.pg_nat_gw
+}
+
+output "rt_depend" {
+  value = aws_route_table.pg_private_rt
+}
