@@ -1,0 +1,24 @@
+---
+- hosts: dbslave
+  become: yes
+  gather_facts: no
+  tasks:
+  - name: ensure nginx is at the latest version
+    apt:
+      name: nginx
+      state: present
+  - name: write the nginx config file
+    template:
+      src: index.html.j2
+      dest: /var/www/html/index.html
+    notify:
+    - restart nginx
+  - name: ensure nginx is running
+    service:
+      name: nginx
+      state: started
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
