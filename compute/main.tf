@@ -57,7 +57,7 @@ resource "aws_instance" "application_host" {
 
   key_name               = var.key_name
   vpc_security_group_ids = [var.app_security_group]
-  subnet_id              = var.private_subnet_a
+  subnet_id              = var.public_subnet_a
   user_data              = data.template_cloudinit_config.cloudinit-application.rendered
 }
 
