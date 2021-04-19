@@ -2,6 +2,12 @@
 hostnamectl set-hostname pgapp
 
 sudo apt-get -y update
+sudo apt-get install apache2 \
+                      php \
+                      libapache2-mod-php \
+                      php-pgsql
+sudo phpenmod pdo_pgsql
+
 password="admin"
 sudo useradd ansadmin
 yes $password | sudo passwd ansadmin
