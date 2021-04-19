@@ -20,3 +20,7 @@ variable "key_name" {}
 variable "instances_type01" {}
 
 variable "instances_type02" {}
+
+variable "remote_user" {}
+
+variable "remote_password" {}

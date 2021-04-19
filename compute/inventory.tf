@@ -5,8 +5,8 @@ data "template_file" "ansible_app_host" {
 
   vars = {
     node_name    = aws_instance.db_master_host.*.tags[count.index]["Name"]
-    ansible_user = "ansadmin"
-    ansible_ssh_pass = "admin"
+    ansible_user = var.remote_user
+    ansible_ssh_pass = var.remote_password
     ip           = "${join(", ", aws_instance.db_master_host.*.private_ip)}"
   }
 }
@@ -41,8 +41,8 @@ resource "null_resource" "provisioner" {
     connection {
       type     = "ssh"
       host     = aws_instance.bastion_host.public_ip
-      user     = "ansadmin"
-      password = "admin"
+      user     = var.remote_user
+      password = var.remote_password
       insecure = true
     }
   }
@@ -63,8 +63,8 @@ resource "null_resource" "cp_ansible" {
     connection {
       type     = "ssh"
       host     = aws_instance.bastion_host.public_ip
-      user     = "ansadmin"
-      password = "admin"
+      user     = var.remote_user
+      password = var.remote_password
       insecure = true
     }
   }
@@ -88,8 +88,8 @@ resource "null_resource" "ansible_run" {
   connection {
     type     = "ssh"
     host     = aws_instance.bastion_host.public_ip
-    user     = "ansadmin"
-    password = "admin"
+    user     = var.remote_user
+    password = var.remote_password
     insecure = true
   }
 

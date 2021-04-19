@@ -18,6 +18,8 @@ module "compute" {
   key_name           = var.key_name
   instance_type_1    = var.instances_type01
   instance_type_2    = var.instances_type02
+  remote_user        = var.remote_user
+  remote_password    = var.remote_password
   public_subnet_a    = module.networking.public_subnet_a
   private_subnet_a   = module.networking.private_subnet_a
   private_subnet_b   = module.networking.private_subnet_b

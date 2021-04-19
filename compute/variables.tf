@@ -21,3 +21,7 @@ variable "db_security_group" {}
 variable "nat_depend" {}
 
 variable "rt_depend" {}
+
+variable "remote_user" {}
+
+variable "remote_password" {}

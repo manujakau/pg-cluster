@@ -17,3 +17,7 @@ key_name = "WP"
 instances_type01 = "t3.micro"
 
 instances_type02 = "t3.small"
+
+remote_user = "ansadmin"
+
+remote_password = "admin"
