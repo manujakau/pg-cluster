@@ -3,6 +3,9 @@
 - hosts: webnodes
   become: yes
   gather_facts: no
+  vars:
+    owner_ip: "{{ self_ip }}"
+    other_ip: "{{ import_ip }}"
   tasks:
   - name: ensure nginx is at the latest version
     apt:
@@ -12,6 +15,13 @@
     template:
       src: index.html.j2
       dest: /var/www/html/index.html
+    notify:
+    - restart nginx
+  - name: Test Variables
+    replace:
+      path: /var/www/html/index.html
+      regexp: 'other_ip_address'
+      replace: "{{other_ip}}"
     notify:
     - restart nginx
   - name: ensure nginx is running

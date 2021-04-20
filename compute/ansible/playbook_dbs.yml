@@ -2,23 +2,58 @@
 - hosts: dbslave
   become: yes
   gather_facts: no
+
+
+  vars:
+    owner_ip: "{{ self_ip }}"
+    repli_ip: "{{ import_ip }}"
+    PostgreSQL_VERSION: "{{ psql_v }}"
+
+
   tasks:
-  - name: ensure nginx is at the latest version
-    apt:
-      name: nginx
-      state: present
-  - name: write the nginx config file
-    template:
-      src: index.html.j2
-      dest: /var/www/html/index.html
-    notify:
-    - restart nginx
-  - name: ensure nginx is running
-    service:
-      name: nginx
-      state: started
+  - name: write psql listen_addresses into config file
+    replace:
+      path: /etc/postgresql/{{ PostgreSQL_VERSION }}/main/postgresql.conf
+      regexp: "#listen_addresses = 'localhost'"
+      replace: "listen_addresses = 'localhost,{{ owner_ip }}'"
+
+  - name: write psql wal_level into config file
+    replace:
+      path: /etc/postgresql/{{ PostgreSQL_VERSION }}/main/postgresql.conf
+      regexp: "#wal_level = replica"
+      replace: "wal_level = replica"
+
+  - name: write psql max_wal_senders into config file
+    replace:
+      path: /etc/postgresql/{{ PostgreSQL_VERSION }}/main/postgresql.conf
+      regexp: "#max_wal_senders = 10"
+      replace: "max_wal_senders = 10"
+
+  - name: write psql hot_standby into config file
+    replace:
+      path: /etc/postgresql/{{ PostgreSQL_VERSION }}/main/postgresql.conf
+      regexp: "#hot_standby = on"
+      replace: "hot_standby = on"
+
+  - name: write psql wal_keep_segments into config file
+    lineinfile:
+      dest: /etc/postgresql/{{ PostgreSQL_VERSION }}/main/postgresql.conf
+      line: "wal_keep_segments = 64"
+
+  - name: write psql replication into config file
+    lineinfile:
+      dest: /etc/postgresql/{{ PostgreSQL_VERSION }}/main/pg_hba.conf
+      line: "host    replication     replication     {{ repli_ip }}/0     md5"
+
+  - name: write psql .pgpass into config file
+    lineinfile:
+      dest: /home/ansadmin/.pgpass
+      line: "{{ repli_ip }}:5432:*:replication:pg1234test"
+
+#  - name: Change postgres password
+#    shell: sudo -u postgres pg_basebackup -h {{ repli_ip }} -U replication -p 5432 -D /var/lib/postgresql/{{ PostgreSQL_VERSION }}/main/  -Fp -Xs -P -R
+#    notify: restart postgresql
+
   handlers:
-    - name: restart nginx
-      service:
-        name: nginx
-        state: restarted
+    - name: restart postgresql
+      service: name=postgresql state=restarted
