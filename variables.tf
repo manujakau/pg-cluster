@@ -24,3 +24,5 @@ variable "instances_type02" {}
 variable "remote_user" {}
 
 variable "remote_password" {}
+
+variable "psql_version" {}

@@ -20,6 +20,7 @@ module "compute" {
   instance_type_2    = var.instances_type02
   remote_user        = var.remote_user
   remote_password    = var.remote_password
+  psql_version       = var.psql_version
   public_subnet_a    = module.networking.public_subnet_a
   private_subnet_a   = module.networking.private_subnet_a
   private_subnet_b   = module.networking.private_subnet_b

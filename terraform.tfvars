@@ -21,3 +21,5 @@ instances_type02 = "t3.small"
 remote_user = "ansadmin"
 
 remote_password = "admin"
+
+psql_version = "13"
