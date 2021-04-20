@@ -22,6 +22,10 @@ output "application_security_group" {
   value = module.networking.application_security_group
 }
 
-output "db_security_group" {
-  value = module.networking.db_security_group
+output "db_master_security_group" {
+  value = module.networking.db_master_security_group
+}
+
+output "db_slave_security_group" {
+  value = module.networking.db_slave_security_group
 }

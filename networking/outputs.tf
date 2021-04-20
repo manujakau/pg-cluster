@@ -22,8 +22,12 @@ output "application_security_group" {
   value = aws_security_group.pg_app_sg.id
 }
 
-output "db_security_group" {
-  value = aws_security_group.pg_db_sg.id
+output "db_master_security_group" {
+  value = aws_security_group.pg_dbm_sg.id
+}
+
+output "db_slave_security_group" {
+  value = aws_security_group.pg_dbs_sg.id
 }
 
 output "nat_depend" {

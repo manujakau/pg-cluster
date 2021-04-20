@@ -184,9 +184,9 @@ resource "aws_security_group" "pg_app_sg" {
   }
 }
 
-resource "aws_security_group" "pg_db_sg" {
-  name        = "pg_db_sg"
-  description = "Used for access to the db instances"
+resource "aws_security_group" "pg_dbm_sg" {
+  name        = "pg_dbm_sg"
+  description = "Used for access to the db master instances"
   vpc_id      = aws_vpc.pg_vpc.id
 
   ingress {
@@ -197,9 +197,53 @@ resource "aws_security_group" "pg_db_sg" {
   }
 
   ingress {
-    from_port       = 5432
-    to_port         = 5432
+    from_port = 5432
+    to_port   = 5432
+    protocol  = "tcp"
+    security_groups = [
+      aws_security_group.pg_app_sg.id,
+      aws_security_group.pg_dbs_sg.id
+    ]
+  }
+
+  ingress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    cidr_blocks = [
+      var.subnet_cidrs["private1"],
+      var.subnet_cidrs["private2"]
+    ]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "pg_dbm_sg"
+  }
+}
+
+resource "aws_security_group" "pg_dbs_sg" {
+  name        = "pg_dbs_sg"
+  description = "Used for access to the db slave instances"
+  vpc_id      = aws_vpc.pg_vpc.id
+
+  ingress {
+    from_port       = 22
+    to_port         = 22
     protocol        = "tcp"
+    security_groups = [aws_security_group.pg_bastion_sg.id]
+  }
+
+  ingress {
+    from_port = 5432
+    to_port   = 5432
+    protocol  = "tcp"
     security_groups = [aws_security_group.pg_app_sg.id]
   }
 
@@ -221,6 +265,6 @@ resource "aws_security_group" "pg_db_sg" {
   }
 
   tags = {
-    Name = "pg_db_sg"
+    Name = "pg_dbs_sg"
   }
 }

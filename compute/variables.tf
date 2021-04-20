@@ -16,7 +16,9 @@ variable "ssh_security_group" {}
 
 variable "app_security_group" {}
 
-variable "db_security_group" {}
+variable "dbm_security_group" {}
+
+variable "dbs_security_group" {}
 
 variable "nat_depend" {}
 

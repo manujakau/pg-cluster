@@ -71,7 +71,7 @@ resource "aws_instance" "db_master_host" {
   }
 
   key_name               = var.key_name
-  vpc_security_group_ids = [var.db_security_group]
+  vpc_security_group_ids = [var.dbm_security_group]
   subnet_id              = var.private_subnet_a
   user_data              = data.template_cloudinit_config.cloudinit-pgmaster.rendered
 }
@@ -86,7 +86,7 @@ resource "aws_instance" "db_slave_host" {
   }
 
   key_name               = var.key_name
-  vpc_security_group_ids = [var.db_security_group]
+  vpc_security_group_ids = [var.dbs_security_group]
   subnet_id              = var.private_subnet_b
   user_data              = data.template_cloudinit_config.cloudinit-pgslave.rendered
 }

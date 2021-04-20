@@ -26,7 +26,8 @@ module "compute" {
   private_subnet_b   = module.networking.private_subnet_b
   ssh_security_group = module.networking.bastion_security_group
   app_security_group = module.networking.application_security_group
-  db_security_group  = module.networking.db_security_group
+  dbm_security_group = module.networking.db_master_security_group
+  dbs_security_group = module.networking.db_slave_security_group
   nat_depend         = module.networking.nat_depend
   rt_depend          = module.networking.rt_depend
 }
