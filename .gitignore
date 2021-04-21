@@ -4,3 +4,6 @@ terraform.tfstate
 terraform.tfstate*
 .terraform.tfstate*
 /networking/.terraform.lock*
+inventory_app
+inventory_dbm
+inventory_dbs
