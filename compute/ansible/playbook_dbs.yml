@@ -50,9 +50,12 @@
       dest: /home/ansadmin/.pgpass
       line: "{{ repli_ip }}:5432:*:replication:pg1234test"
 
-#  - name: Change postgres password
-#    shell: sudo -u postgres pg_basebackup -h {{ repli_ip }} -U replication -p 5432 -D /var/lib/postgresql/{{ PostgreSQL_VERSION }}/main/  -Fp -Xs -P -R
-#    notify: restart postgresql
+  - name: Clean psql dir
+    shell: rm -rfv /var/lib/postgresql/{{ PostgreSQL_VERSION }}/main/*
+
+  - name: Change postgres password
+    shell: PGPASSWORD=pg1234test pg_basebackup -h {{ repli_ip }} -U replication -p 5432 -D /var/lib/postgresql/{{ PostgreSQL_VERSION }}/main/  -Fp -Xs -P -R
+    notify: restart postgresql
 
   handlers:
     - name: restart postgresql
