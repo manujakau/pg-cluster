@@ -218,7 +218,7 @@ resource "null_resource" "ansible_run" {
   provisioner "remote-exec" {
     inline = [
       "echo 'Connected To Private Network'",
-      "sleep 5 && ansible-playbook -i ~/inventory_app ~/ansible/playbook_app.yml ",
+      "sleep 120 && ansible-playbook -i ~/inventory_app ~/ansible/playbook_app.yml ",
       "sleep 5 && ansible-playbook -i ~/inventory_dbm ~/ansible/playbook_dbm.yml ",
       "sleep 5 && ansible-playbook -i ~/inventory_dbs ~/ansible/playbook_dbs.yml ",
     ]
