@@ -22,4 +22,4 @@ remote_user = "ansadmin"
 
 remote_password = "admin"
 
-psql_version = "13"
+psql_version = "12"
