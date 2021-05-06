@@ -11,6 +11,10 @@
     apt:
       name: nginx
       state: present
+  - name: write the php main file
+    template:
+      src: index.php
+      dest: /var/www/html/index.php
   - name: write the nginx config file
     template:
       src: index.html.j2
