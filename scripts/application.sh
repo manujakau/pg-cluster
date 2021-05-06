@@ -2,8 +2,8 @@
 hostnamectl set-hostname pgapp
 
 sudo apt-get -y update
-sudo apt-get install apache2 \
-                      php \
+sudo apt-get install php \
+                      apache2 \
                       libapache2-mod-php \
                       php-pgsql
 sudo phpenmod pdo_pgsql
