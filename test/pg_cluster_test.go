@@ -21,7 +21,7 @@ func TestTerraformAwsHelloWorldExample(t *testing.T) {
 
 	terraform.InitAndApply(t, terraformOptions)
 
-	publicIp := terraform.Output(t, terraformOptions, "public_ip")
+	publicIp := terraform.Output(t, terraformOptions, "app_public_ip")
 
 	url := fmt.Sprintf("http://%s", publicIp)
 	http_helper.HttpGetWithRetry(t, url, nil, 200, "Hello, World!", 30, 5*time.Second)

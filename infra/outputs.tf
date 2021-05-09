@@ -29,3 +29,7 @@ output "db_master_security_group" {
 output "db_slave_security_group" {
   value = module.networking.db_slave_security_group
 }
+
+output "app_public_ip" {
+  value = module.compute.app_public_ip
+}
