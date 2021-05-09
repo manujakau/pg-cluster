@@ -14,7 +14,7 @@ func TestTerraformAwsHelloWorldExample(t *testing.T) {
 	t.Parallel()
 
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-		TerraformDir: "../examples/terraform-aws-hello-world-example",
+		TerraformDir: "/home/manujak/pg-cluster/infra",
 	})
 
 	defer terraform.Destroy(t, terraformOptions)
