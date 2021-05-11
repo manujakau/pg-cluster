@@ -7,20 +7,18 @@
     owner_ip: "{{ self_ip }}"
     other_ip: "{{ import_ip }}"
   tasks:
-  - name: ensure nginx is at the latest version
-    apt:
-      name: nginx
-      state: present
   - name: write the php main file
     template:
       src: index.php
       dest: /var/www/html/index.php
-  - name: write the nginx config file
+    notify:
+    - restart apache
+  - name: write the test config file
     template:
       src: index.html.j2
       dest: /var/www/html/index.html
     notify:
-    - restart nginx
+    - restart apache
   - name: Test Variables
     replace:
       path: /var/www/html/index.html
@@ -28,12 +26,8 @@
       replace: "{{other_ip}}"
     notify:
     - restart nginx
-  - name: ensure nginx is running
-    service:
-      name: nginx
-      state: started
   handlers:
-    - name: restart nginx
+    - name: restart apache
       service:
-        name: nginx
+        name: apache2
         state: restarted
