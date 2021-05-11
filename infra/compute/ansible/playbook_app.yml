@@ -25,7 +25,7 @@
       regexp: 'other_ip_address'
       replace: "{{other_ip}}"
     notify:
-    - restart nginx
+    - restart apache
   handlers:
     - name: restart apache
       service:
