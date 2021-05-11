@@ -7,3 +7,5 @@ terraform.tfstate*
 inventory_app
 inventory_dbm
 inventory_dbs
+go.mod
+go.sum
