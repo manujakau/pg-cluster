@@ -28,6 +28,6 @@ func TestTerraformAWSinfra(t *testing.T) {
 	publicIp := terraform.Output(t, terraformOptions, "app_public_ip")
 
 	// Verify the resource group exists
-	url := fmt.Sprintf("http://%s", publicIp)
-	http_helper.HttpGetWithRetry(t, url, nil, 200, "<!doctype html>", 30, 5*time.Second)
+	url := fmt.Sprintf("http://%s/index.php?n=2", publicIp)
+	http_helper.HttpGetWithRetry(t, url, nil, 200, "4", 30, 5*time.Second)
 }
