@@ -49,7 +49,6 @@ resource "aws_instance" "bastion_host" {
 resource "aws_instance" "application_host" {
   instance_type        = var.instance_type_2
   ami                  = data.aws_ami.server_ami_2.id
-  iam_instance_profile = aws_iam_instance_profile.pg_cluster_profile.name
 
   tags = {
     Name = "application_host"
@@ -64,7 +63,6 @@ resource "aws_instance" "application_host" {
 resource "aws_instance" "db_master_host" {
   instance_type        = var.instance_type_2
   ami                  = data.aws_ami.server_ami_2.id
-  iam_instance_profile = aws_iam_instance_profile.pg_cluster_profile.name
 
   tags = {
     Name = "db_master_host"
@@ -79,7 +77,6 @@ resource "aws_instance" "db_master_host" {
 resource "aws_instance" "db_slave_host" {
   instance_type        = var.instance_type_2
   ami                  = data.aws_ami.server_ami_2.id
-  iam_instance_profile = aws_iam_instance_profile.pg_cluster_profile.name
 
   tags = {
     Name = "db_slave_host"
