@@ -11,6 +11,16 @@ sudo /etc/init.d/postgresql start
 sudo systemctl is-enabled postgresql
 
 sudo -u postgres psql << EOF
+ALTER USER postgres WITH PASSWORD 'admin123';
+CREATE DATABASE phpdb;
+EOF
+
+sudo -u postgres psql << EOF
+\c phpdb;
+CREATE TABLE blacklistip (id serial PRIMARY KEY, ip varchar (20) NOT NULL);
+EOF
+
+sudo -u postgres psql << EOF
 CREATE USER replication REPLICATION LOGIN CONNECTION LIMIT 1 ENCRYPTED PASSWORD 'pg1234test';
 EOF
 
