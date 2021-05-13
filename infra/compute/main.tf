@@ -47,8 +47,8 @@ resource "aws_instance" "bastion_host" {
 }
 
 resource "aws_instance" "application_host" {
-  instance_type        = var.instance_type_2
-  ami                  = data.aws_ami.server_ami_2.id
+  instance_type = var.instance_type_2
+  ami           = data.aws_ami.server_ami_2.id
 
   tags = {
     Name = "application_host"
@@ -61,8 +61,8 @@ resource "aws_instance" "application_host" {
 }
 
 resource "aws_instance" "db_master_host" {
-  instance_type        = var.instance_type_2
-  ami                  = data.aws_ami.server_ami_2.id
+  instance_type = var.instance_type_2
+  ami           = data.aws_ami.server_ami_2.id
 
   tags = {
     Name = "db_master_host"
@@ -75,8 +75,8 @@ resource "aws_instance" "db_master_host" {
 }
 
 resource "aws_instance" "db_slave_host" {
-  instance_type        = var.instance_type_2
-  ami                  = data.aws_ami.server_ami_2.id
+  instance_type = var.instance_type_2
+  ami           = data.aws_ami.server_ami_2.id
 
   tags = {
     Name = "db_slave_host"
