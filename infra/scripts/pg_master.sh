@@ -17,7 +17,7 @@ EOF
 
 sudo -u postgres psql << EOF
 \c phpdb;
-CREATE TABLE blacklistip (id serial PRIMARY KEY, ip varchar (20) NOT NULL);
+CREATE TABLE blacklistip (id serial PRIMARY KEY, ip varchar (20) UNIQUE);
 EOF
 
 sudo -u postgres psql << EOF
