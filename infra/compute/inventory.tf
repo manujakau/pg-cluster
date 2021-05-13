@@ -11,6 +11,7 @@ data "template_file" "ansible_app_host" {
     ansible_ssh_pass = var.remote_password
     ip               = "${join(", ", aws_instance.application_host.*.private_ip)}"
     ip2              = "${join(", ", aws_instance.db_master_host.*.private_ip)}"
+    ip3              = "${join(", ", aws_instance.db_slave_host.*.private_ip)}"
     env_name         = "webnodes"
     psql_version     = var.psql_version
   }
@@ -66,6 +67,7 @@ data "template_file" "ansible_db_master_host" {
     ansible_ssh_pass = var.remote_password
     ip               = "${join(", ", aws_instance.db_master_host.*.private_ip)}"
     ip2              = "${join(", ", aws_instance.db_slave_host.*.private_ip)}"
+    ip3              = "${join(", ", aws_instance.application_host.*.private_ip)}"
     env_name         = "dbmaster"
     psql_version     = var.psql_version
   }
@@ -121,6 +123,7 @@ data "template_file" "ansible_db_slave_host" {
     ansible_ssh_pass = var.remote_password
     ip               = "${join(", ", aws_instance.db_slave_host.*.private_ip)}"
     ip2              = "${join(", ", aws_instance.db_master_host.*.private_ip)}"
+    ip3              = "${join(", ", aws_instance.application_host.*.private_ip)}"
     env_name         = "dbslave"
     psql_version     = var.psql_version
   }
