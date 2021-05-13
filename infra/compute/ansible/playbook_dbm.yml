@@ -7,6 +7,7 @@
   vars:
     owner_ip: "{{ self_ip }}"
     repli_ip: "{{ import_ip }}"
+    app_ip: "{{ import_ip2 }}"
     PostgreSQL_VERSION: "{{ psql_v }}"
 
 
@@ -15,7 +16,7 @@
     replace:
       path: /etc/postgresql/{{ PostgreSQL_VERSION }}/main/postgresql.conf
       regexp: "#listen_addresses = 'localhost'"
-      replace: "listen_addresses = 'localhost,{{ owner_ip }}'"
+      replace: "listen_addresses = 'localhost,{{ owner_ip }},{{ app_ip }}'"
 
   - name: write psql wal_level into config file
     replace:
@@ -33,6 +34,11 @@
     lineinfile:
       dest: /etc/postgresql/{{ PostgreSQL_VERSION }}/main/postgresql.conf
       line: "wal_keep_segments = 64"
+
+  - name: allow connection into config file
+    lineinfile:
+      dest: /etc/postgresql/{{ PostgreSQL_VERSION }}/main/pg_hba.conf
+      line: "host    all     all     {{ app_ip }}/32     md5"
 
   - name: write psql replication into config file
     lineinfile:
